@@ -7,19 +7,52 @@ const route = useRoute();
 // 將資料渲染至下方的 div.room-page 區塊
 
 const { id } = route.params;
-const {roomDetail,getRoomDetail} =useRoom()
-await getRoomDetail(id)
+const { roomDetail, getRoomDetail } = useRoom();
+await getRoomDetail(id);
 const isProvide = function (isProvideBoolean = false) {
   return isProvideBoolean ? "提供" : "未提供";
 };
+useSeoMeta({
+  title: roomDetail.value.name,
+  titleTemplate: (title) => `Freyja | ${title}`,
+  description: () => `${roomDetail.value.description}`,
+  ogTitle: () => `Freyja | ${roomDetail.value.name}`,
+  ogDescription: () => `${roomDetail.value.description}`,
+  ogImage: () => `${roomDetail.value.imageUrl}`,
+  ogUrl: () => `https://freyja.travel.com.tw/room/${roomDetail.value._id}`,
+  twitterCard: `summary_large_image`,
+  twitterTitle: () => `Freyja | ${roomDetail.value.name}`,
+  twitterDescription: () => `${roomDetail.value.description}`,
+  twitterImage: () => `${roomDetail.value.imageUrl}`,
+});
+
+// 使用 useSeoMeta  將 roomObject 的資訊寫入 SEO Meta
+/* 請撰寫 useSeoMeta({ }) 渲染出下方的 HTML 結構，並將 {{ }}  改成使用 roomObject 物件的資料。
+<title> Freyja | {{ 房型名稱 }}</title>
+<meta name="description" content="{{ 房型描述 }}">
+<meta property="og:title" content="Freyja | {{ 房型名稱 }} ">
+<meta property="og:description" content="{{ 房型描述 }}">
+<meta property="og:image" content="{{房型主圖}}">
+<meta property="og:url" content="https://freyja.travel.com.tw/room/{房型 id }">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Freyja | {{ 房型名稱 }}">
+<meta name="twitter:description" content="{{ 房型描述 }}">
+<meta name="twitter:image" content="{{房型主圖}}">
+*/
+
+/*useSeoMeta({
+
+});
+*/
 </script>
 
 <template>
   <div>
     <h2>房型詳細頁面</h2>
     <pre>
-  <!-- {{ roomDetail }} -->
-</pre>
+  {{ roomDetail }}
+</pre
+    >
     <div class="container">
       <button @click="router.go(-1)">回上一頁</button>
       <div class="row justify-content-center">
@@ -39,7 +72,10 @@ const isProvide = function (isProvideBoolean = false) {
                 class="room-main-image"
               />
               <ul class="room-image-list">
-                <li v-for="(imageUrl, index) in roomDetail.imageUrlList" :key="index">
+                <li
+                  v-for="(imageUrl, index) in roomDetail.imageUrlList"
+                  :key="index"
+                >
                   <img
                     :src="imageUrl"
                     :alt="`${roomDetail.name}圖片${index + 1}`"
